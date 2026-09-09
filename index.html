@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Oktoberfest 2026 · Crew HQ</title>
   <meta name="description" content="Everything our crew needs for Oktoberfest 2026: what it is, the schedule, a map, contacts, good-to-know tips and an anonymous Q&A." />
+  <meta name="robots" content="noindex, nofollow" />
 
   <!-- Leaflet (interactive map) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -17,8 +18,35 @@
 
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍺</text></svg>" />
+
+  <!-- Crew password gate: load config, then lock the page before it paints -->
+  <script src="config.js"></script>
+  <script>
+    (function () {
+      try {
+        var cfg = window.OKTOBERFEST_CONFIG || {};
+        var t = (cfg.SITE_PASSWORD_SHA256 || "").toLowerCase();
+        if (t && localStorage.getItem("okto_unlocked") !== t) {
+          document.documentElement.className += " gated";
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <div class="gate-emoji">🍺🔒</div>
+      <h1>Oktoberfest 2026 · Crew HQ</h1>
+      <p>Enter the crew passphrase to continue.</p>
+      <form id="gate-form">
+        <input id="gate-input" type="password" placeholder="Passphrase" autocomplete="off" autofocus />
+        <button type="submit" class="btn btn-primary">Enter</button>
+      </form>
+      <p id="gate-error" class="gate-error" hidden>Nope — try again.</p>
+    </div>
+  </div>
+
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
@@ -272,13 +300,13 @@
   <!-- Supabase (optional backend for Q&A) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Editable data -->
-  <script src="config.js"></script>
+  <!-- Editable data (config.js is loaded in <head> for the password gate) -->
   <script src="data/schedule.js"></script>
   <script src="data/spots.js"></script>
   <script src="data/contacts.js"></script>
 
   <!-- App logic -->
+  <script src="js/gate.js"></script>
   <script src="js/app.js"></script>
   <script src="js/map.js"></script>
   <script src="js/qa.js"></script>

@@ -12,6 +12,7 @@
   };
 
   let map = null;
+  let savedBounds = null;
   const esc = (window.OktoUtil && window.OktoUtil.esc) || ((s) => s);
 
   function pinIcon(color) {
@@ -40,14 +41,19 @@
     const addr = item.address
       ? '<p class="popup-addr">' + esc(item.address) + "</p>"
       : "";
+    // Only show the Google Maps button for real places (not routes).
+    const hasPlace = item.address || (item.lat != null && item.lng != null);
+    const maps = hasPlace
+      ? '<a class="popup-gmaps" target="_blank" rel="noopener" href="' +
+        gmapsUrl(item) +
+        '">📍 Open in Google Maps</a>'
+      : "";
     return (
       '<div class="popup-cat">' + esc(item.cat || "") + "</div>" +
       '<h3 class="popup-title">' + esc(item.name) + "</h3>" +
       '<p class="popup-desc">' + esc(item.desc || "") + "</p>" +
       addr +
-      '<a class="popup-gmaps" target="_blank" rel="noopener" href="' +
-      gmapsUrl(item) +
-      '">📍 Open in Google Maps</a>'
+      maps
     );
   }
 
@@ -112,28 +118,47 @@
       return li;
     });
 
-    // ---- Routes (coloured lines) ----
+    // ---- Routes (real-colour double lines + station dots) ----
     const routeEntries = routes.map((r) => {
-      const col = COLORS[r.color] || COLORS.blue;
-      const line = L.polyline(r.points, {
-        color: col,
-        weight: 5,
-        opacity: 0.85,
-        dashArray: r.dashed ? "2 10" : null,
-        lineCap: "round"
-      })
-        .addTo(map)
-        .bindPopup(popupHtml({ name: r.name, cat: "Route", desc: r.desc }), {
-          maxWidth: 260
-        });
+      const pts = (r.stations || []).map((s) => [s.lat, s.lng]);
+      const outer = (r.colors && r.colors[0]) || "#0a6ebd";
+      const inner = (r.colors && r.colors[1]) || "#ffffff"; // single colour → white centre
+      const routePopup = popupHtml({ name: r.name, cat: r.tag || "Route", desc: r.desc });
 
+      // Double line: thick outer colour + thinner inner colour on top.
+      const outerLine = L.polyline(pts, {
+        color: outer, weight: 8, opacity: 1, lineCap: "round", lineJoin: "round"
+      }).addTo(map);
+      const innerLine = L.polyline(pts, {
+        color: inner, weight: 3.5, opacity: 1, lineCap: "round", lineJoin: "round"
+      }).addTo(map);
+
+      [outerLine, innerLine].forEach((ln) => {
+        ln.bindTooltip(r.tag || r.name, { sticky: true, direction: "top", className: "line-tag" });
+        ln.bindPopup(routePopup, { maxWidth: 260 });
+      });
+
+      // Station dots with name-on-hover.
+      (r.stations || []).forEach((s) => {
+        L.circleMarker([s.lat, s.lng], {
+          radius: 4.5, color: "#ffffff", weight: 2, fillColor: "#3a3a3a", fillOpacity: 1
+        })
+          .addTo(map)
+          .bindTooltip(s.name, { direction: "top", className: "station-tip" });
+      });
+
+      const group = L.featureGroup([outerLine, innerLine]);
       const li = document.createElement("li");
+      const swatch =
+        r.colors && r.colors.length >= 2
+          ? "linear-gradient(to bottom, " + outer + " 0 34%, " + inner + " 34% 66%, " + outer + " 66% 100%)"
+          : "linear-gradient(to bottom, " + outer + " 0 34%, #fff 34% 66%, " + outer + " 66% 100%)";
       li.innerHTML =
-        '<span class="route-line" style="background:' + col + '"></span>' +
+        '<span class="route-line" style="background:' + swatch + '"></span>' +
         '<span><span class="s-name">' + esc(r.name) + "</span></span>";
       li.addEventListener("click", () => {
-        map.fitBounds(line.getBounds(), { padding: [40, 40] });
-        line.openPopup();
+        map.fitBounds(group.getBounds(), { padding: [40, 40] });
+        outerLine.openPopup();
       });
       return li;
     });
@@ -162,21 +187,30 @@
     addLegendGroup(legend, "Spots", spotEntries);
     addLegendGroup(legend, "Getting there", routeEntries);
 
-    // Fit to the city cluster (airport stays out so the centre is readable)
-    if (cityBounds.length > 1) {
-      map.fitBounds(cityBounds, { padding: [50, 50] });
-    } else if (cityBounds.length === 1) {
-      map.setView(cityBounds[0], 14);
-    } else {
-      map.setView([48.1351, 11.582], 12);
-    }
+    // Remember the city cluster so we can re-fit whenever the map is shown
+    // (the airport stays out of it so the centre stays readable).
+    savedBounds = cityBounds.length ? L.latLngBounds(cityBounds) : null;
+    fitCity();
+  }
+
+  // Fit the view to the saved city bounds. Deferred so the container has its
+  // real size first (Leaflet mis-measures a just-revealed/hidden container).
+  function fitCity() {
+    setTimeout(function () {
+      map.invalidateSize();
+      if (savedBounds) {
+        map.fitBounds(savedBounds, { padding: [40, 40] });
+      } else {
+        map.setView([48.1351, 11.582], 12);
+      }
+    }, 60);
   }
 
   function refresh() {
     if (!map) {
       init();
     } else {
-      setTimeout(() => map.invalidateSize(), 0);
+      fitCity();
     }
   }
 

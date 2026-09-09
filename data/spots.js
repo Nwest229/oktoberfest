@@ -79,52 +79,58 @@ window.SPOTS = [
   }
 ];
 
-/* ---- Train routes (coloured lines) ------------------------------------
-   Each route is an approximate path through the key stations — enough to
-   see the journey on the map, not the exact track. Click it for details.
+/* ---- Train routes (coloured double lines) ------------------------------
+   Drawn as a double line in the REAL MVG line colours. Hover a station dot
+   for its name, or the line for the line tag (e.g. "U6 / U7").
+     tag      : short line tag shown on hover
+     colors   : [outer, inner] real line colours. One colour = solid line
+                with a white centre; two colours = a two-tone double line.
+     stations : ordered stops { name, lat, lng } — path + hover labels.
+   MVG colours used below (tweak any hex if you prefer):
+     S8 #00934b · U4 #00a79d · U5 #be7b01 · U6 #0065ae · U7 #c6362f
    ----------------------------------------------------------------------- */
 window.ROUTES = [
   {
     name: "S8 · Airport → city",
+    tag: "S8",
     desc: "Fastest way in: hop on the S8 at the airport (~40 min) to Marienplatz, then the U6 north to Münchner Freiheit for the flat. (S1 also works.) Tip: a group day ticket beats single fares.",
-    color: "green",
-    dashed: false,
-    points: [
-      [48.3538, 11.7861], // Airport
-      [48.2249, 11.6720], // Ismaning
-      [48.1730, 11.6300], // Johanneskirchen
-      [48.1270, 11.6045], // Ostbahnhof
-      [48.1320, 11.5900], // Rosenheimer Platz
-      [48.1373, 11.5754], // Marienplatz
-      [48.1396, 11.5658], // Karlsplatz (Stachus)
-      [48.1401, 11.5600]  // Hauptbahnhof
+    colors: ["#00934b"],
+    stations: [
+      { name: "Munich Airport", lat: 48.3538, lng: 11.7861 },
+      { name: "Ismaning", lat: 48.2249, lng: 11.6720 },
+      { name: "Johanneskirchen", lat: 48.1730, lng: 11.6300 },
+      { name: "Ostbahnhof", lat: 48.1270, lng: 11.6045 },
+      { name: "Rosenheimer Platz", lat: 48.1320, lng: 11.5900 },
+      { name: "Marienplatz", lat: 48.1373, lng: 11.5754 },
+      { name: "Karlsplatz (Stachus)", lat: 48.1396, lng: 11.5658 },
+      { name: "Hauptbahnhof", lat: 48.1401, lng: 11.5600 }
     ]
   },
   {
     name: "U6 / U7 · Münchner Freiheit → Sendlinger Tor",
+    tag: "U6 / U7",
     desc: "Our flat's line into town: U6 or U7 from Münchner Freiheit down through Odeonsplatz and Marienplatz to Sendlinger Tor. Change at Odeonsplatz onto the U4/U5 for the Wiesn.",
-    color: "blue",
-    dashed: false,
-    points: [
-      [48.1616, 11.5860], // Münchner Freiheit
-      [48.1584, 11.5858], // Giselastraße
-      [48.1507, 11.5810], // Universität
-      [48.1425, 11.5773], // Odeonsplatz
-      [48.1373, 11.5754], // Marienplatz
-      [48.1335, 11.5668]  // Sendlinger Tor
+    colors: ["#0065ae", "#c6362f"],
+    stations: [
+      { name: "Münchner Freiheit", lat: 48.1616, lng: 11.5860 },
+      { name: "Giselastraße", lat: 48.1584, lng: 11.5858 },
+      { name: "Universität", lat: 48.1507, lng: 11.5810 },
+      { name: "Odeonsplatz", lat: 48.1425, lng: 11.5773 },
+      { name: "Marienplatz", lat: 48.1373, lng: 11.5754 },
+      { name: "Sendlinger Tor", lat: 48.1335, lng: 11.5668 }
     ]
   },
   {
     name: "U4 / U5 · Odeonsplatz → Schwanthalerhöhe",
+    tag: "U4 / U5",
     desc: "The Wiesn line: U4 or U5 from Odeonsplatz westbound. Get off at Theresienwiese — right at the tents. Change here from the U6 at Odeonsplatz.",
-    color: "teal",
-    dashed: true,
-    points: [
-      [48.1425, 11.5773], // Odeonsplatz
-      [48.1396, 11.5658], // Karlsplatz (Stachus)
-      [48.1401, 11.5600], // Hauptbahnhof
-      [48.1360, 11.5478], // Theresienwiese
-      [48.1344, 11.5405]  // Schwanthalerhöhe
+    colors: ["#00a79d", "#be7b01"],
+    stations: [
+      { name: "Odeonsplatz", lat: 48.1425, lng: 11.5773 },
+      { name: "Karlsplatz (Stachus)", lat: 48.1396, lng: 11.5658 },
+      { name: "Hauptbahnhof", lat: 48.1401, lng: 11.5600 },
+      { name: "Theresienwiese", lat: 48.1360, lng: 11.5478 },
+      { name: "Schwanthalerhöhe", lat: 48.1344, lng: 11.5405 }
     ]
   }
 ];
