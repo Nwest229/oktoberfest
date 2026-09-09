@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oktoberfest 2026 · Crew HQ</title>
+  <meta name="description" content="Everything our crew needs for Oktoberfest 2026: what it is, the schedule, a map, contacts, good-to-know tips and an anonymous Q&A." />
+
+  <!-- Leaflet (interactive map) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍺</text></svg>" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-emoji">🍺</span>
+        <div class="brand-text">
+          <h1>Oktoberfest 2026</h1>
+          <p class="tagline">Crew HQ · Munich, 19 Sep – 4 Oct</p>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button class="tab is-active" data-tab="about" role="tab" aria-selected="true">About</button>
+        <button class="tab" data-tab="schedule" role="tab" aria-selected="false">Schedule</button>
+        <button class="tab" data-tab="map" role="tab" aria-selected="false">Map</button>
+        <button class="tab" data-tab="contacts" role="tab" aria-selected="false">Contacts</button>
+        <button class="tab" data-tab="info" role="tab" aria-selected="false">Good to know</button>
+        <button class="tab" data-tab="qa" role="tab" aria-selected="false">Q&amp;A</button>
+      </nav>
+    </div>
+    <div class="diamond-strip" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <!-- ABOUT / INTRO -->
+    <section id="about" class="panel is-active" role="tabpanel">
+      <div class="hero">
+        <p class="hero-kicker">Willkommen zur Wiesn</p>
+        <h2 class="hero-title">What is Oktoberfest?</h2>
+        <p class="hero-lead">
+          Oktoberfest is the world's largest folk festival — a 16-to-18-day explosion of
+          beer, brass bands and Bavarian tradition held every year in Munich. It started
+          in 1810 as the wedding party of Crown Prince Ludwig and Princess Therese, and
+          the festival grounds still carry her name: the <em>Theresienwiese</em> (Therese's
+          meadow), which everyone just calls <em>die Wiesn</em>.
+        </p>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><span class="stat-num">1810</span><span class="stat-label">first held</span></div>
+        <div class="stat"><span class="stat-num">~6M</span><span class="stat-label">visitors a year</span></div>
+        <div class="stat"><span class="stat-num">~7M</span><span class="stat-label">litres of beer</span></div>
+        <div class="stat"><span class="stat-num">14</span><span class="stat-label">big tents</span></div>
+        <div class="stat"><span class="stat-num">6</span><span class="stat-label">breweries only</span></div>
+        <div class="stat"><span class="stat-num">1L</span><span class="stat-label">per Maß mug</span></div>
+      </div>
+
+      <div class="prose">
+        <h3>What it's actually like today</h3>
+        <p>
+          Today the Wiesn is two festivals in one. By day it's wholesome and
+          family-friendly: fairground rides, roast chicken and pretzels, oompah bands
+          and grandparents in their finest <em>Tracht</em>. By night the giant tents
+          turn into roaring singalongs where thousands stand on the benches, arm in arm,
+          belting out the same songs. It's equal parts centuries-old tradition and the
+          biggest international party on earth — people fly in from everywhere, but it's
+          still unmistakably, proudly Bavarian.
+        </p>
+        <p>
+          It kicks off at noon on the opening Saturday when the Mayor of Munich taps the
+          first keg and shouts <strong>“O'zapft is!”</strong> (“It's tapped!”). Only six
+          Munich breweries are allowed to pour — Augustiner, Hacker-Pschorr, Hofbräu,
+          Löwenbräu, Paulaner and Spaten — and their special <em>Oktoberfestbier</em>
+          (~6% ABV) is served only in the one-litre <em>Maß</em>. Which is exactly as much
+          beer as it sounds like.
+        </p>
+        <p class="prose-note">
+          👉 Flick through the tabs above: the <strong>Schedule</strong> for our plan, the
+          <strong>Map</strong> for where everything is, <strong>Contacts</strong> for the
+          crew, <strong>Good to know</strong> for the survival tips, and the anonymous
+          <strong>Q&amp;A</strong> to ask anything. Prost! 🍻
+        </p>
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section id="schedule" class="panel" role="tabpanel">
+      <div class="panel-head">
+        <h2>Schedule</h2>
+        <p class="panel-sub">Arrival times, tent bookings and the plan for each day.</p>
+      </div>
+      <div id="schedule-list" class="schedule-list"></div>
+    </section>
+
+    <!-- MAP -->
+    <section id="map" class="panel" role="tabpanel">
+      <div class="panel-head">
+        <h2>Map of Munich</h2>
+        <p class="panel-sub">Shaded areas, our key spots, and the train routes. Tap anything for details + Google Maps.</p>
+      </div>
+      <div class="map-layout">
+        <div id="leaflet-map" class="leaflet-map"></div>
+        <aside class="spot-legend">
+          <h3>Legend</h3>
+          <ul id="spot-list" class="spot-list"></ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- CONTACTS -->
+    <section id="contacts" class="panel" role="tabpanel">
+      <div class="panel-head">
+        <h2>Contact book</h2>
+        <p class="panel-sub">Tap to call or text, or add anyone straight to your phone's contacts.</p>
+      </div>
+      <div id="contacts-grid" class="contacts-grid"></div>
+    </section>
+
+    <!-- GOOD TO KNOW -->
+    <section id="info" class="panel" role="tabpanel">
+      <div class="panel-head">
+        <h2>Good to know</h2>
+        <p class="panel-sub">The stuff that isn't obvious if it's your first Wiesn.</p>
+      </div>
+
+      <div class="info-grid">
+
+        <!-- What to wear -->
+        <article class="info-card info-card-wide">
+          <h3>👗 What to wear — Tracht</h3>
+          <p>
+            Half the fun is the outfit. Women wear a <strong>Dirndl</strong> (bodice,
+            blouse, skirt + apron), men wear <strong>Lederhosen</strong> (leather shorts
+            with suspenders). You don't <em>have</em> to — but almost everyone does, and
+            you'll feel left out in jeans.
+          </p>
+
+          <div class="outfit-cards">
+            <div class="outfit">
+              <div class="outfit-img">
+                <svg viewBox="0 0 120 150" role="img" aria-label="Dirndl illustration">
+                  <path d="M28 72 L18 142 H102 L92 72 Z" fill="#b5305f"/>
+                  <path d="M46 72 L41 142 H79 L74 72 Z" fill="#f4e7c9"/>
+                  <path d="M46 72 H74 L71 86 H49 Z" fill="#e7d2a3"/>
+                  <path d="M43 40 Q60 33 77 40 L74 74 H46 Z" fill="#8a1e44"/>
+                  <line x1="60" y1="45" x2="60" y2="72" stroke="#f4e7c9" stroke-width="1.6"/>
+                  <path d="M52 48 L68 58 M68 48 L52 58 M52 60 L68 68" stroke="#f4e7c9" stroke-width="1.4" fill="none"/>
+                  <ellipse cx="40" cy="45" rx="9" ry="11" fill="#ffffff"/>
+                  <ellipse cx="80" cy="45" rx="9" ry="11" fill="#ffffff"/>
+                  <path d="M49 39 Q60 49 71 39 L69 34 Q60 40 51 34 Z" fill="#ffffff"/>
+                </svg>
+              </div>
+              <div class="outfit-name">Dirndl</div>
+              <a class="btn btn-primary btn-small" href="https://www.vinted.com/catalog?search_text=dirndl" target="_blank" rel="noopener">Browse on Vinted →</a>
+            </div>
+
+            <div class="outfit">
+              <div class="outfit-img">
+                <svg viewBox="0 0 120 150" role="img" aria-label="Lederhosen illustration">
+                  <rect x="38" y="34" width="44" height="44" rx="4" fill="#e9eef3"/>
+                  <path d="M38 34 v44 M50 34 v44 M62 34 v44 M74 34 v44 M38 46 h44 M38 58 h44 M38 70 h44" stroke="#c7d3de" stroke-width="1"/>
+                  <path d="M34 72 L28 124 H52 L60 96 L68 124 H92 L86 72 Z" fill="#7a4a1e"/>
+                  <path d="M34 72 H86 L84 82 H36 Z" fill="#6b3f18"/>
+                  <rect x="47" y="70" width="26" height="28" rx="3" fill="#8a5a2b"/>
+                  <circle cx="51" cy="77" r="2.2" fill="#e8c07a"/>
+                  <circle cx="69" cy="77" r="2.2" fill="#e8c07a"/>
+                  <path d="M42 74 L45 40" stroke="#8a5a2b" stroke-width="6" fill="none" stroke-linecap="round"/>
+                  <path d="M78 74 L75 40" stroke="#8a5a2b" stroke-width="6" fill="none" stroke-linecap="round"/>
+                  <path d="M45 52 L75 58" stroke="#8a5a2b" stroke-width="6" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="outfit-name">Lederhosen</div>
+              <a class="btn btn-primary btn-small" href="https://www.vinted.com/catalog?search_text=lederhosen" target="_blank" rel="noopener">Browse on Vinted →</a>
+            </div>
+          </div>
+          <p class="info-note">The Vinted buttons are generic searches for now — send me your specific picks and I'll swap in the exact links + photos.</p>
+
+          <div class="secret">
+            <strong>🎀 The apron-bow secret</strong> (nobody tells tourists this): the side
+            a woman ties her Dirndl bow means something —
+            <em>left</em> = single, <em>right</em> = taken/married,
+            <em>centre-front</em> = virgin or undecided, <em>back</em> = widowed
+            (or she's a waitress). Tie — and read — carefully.
+          </div>
+        </article>
+
+        <!-- Transport -->
+        <article class="info-card">
+          <h3>🚇 Getting around — ÖPNV</h3>
+          <p>Munich's network is the <strong>MVV</strong>: U-Bahn, S-Bahn, tram & bus, all on one ticket.</p>
+          <ul class="tick-list">
+            <li><strong>Travelling as a group?</strong> The <em>Gruppentageskarte</em> (group day ticket, up to 5 people) is by far the cheapest way to get around together all day.</li>
+            <li><strong>Here a while?</strong> The <em>Deutschland-Ticket</em> (~€58/month) covers all local & regional transport across Germany.</li>
+            <li><strong>Airport trips</strong> reach the outer fare zones — buy a ticket covering zones <em>M–5</em>.</li>
+            <li>Get the <strong>MVGO</strong> or <strong>MVV</strong> app to buy tickets on your phone; <strong>DB Navigator</strong> for trains.</li>
+            <li>Validate paper tickets before boarding — ticket checks are frequent and fines are steep.</li>
+          </ul>
+        </article>
+
+        <!-- Tent rules -->
+        <article class="info-card">
+          <h3>⛺ Tent rules & etiquette</h3>
+          <ul class="tick-list">
+            <li>You need a <strong>seat to be served</strong> — no seat, no beer.</li>
+            <li><strong>Reservations</strong> are usually needed evenings & weekends; weekday mornings you can often walk in.</li>
+            <li>Standing on the <strong>benches</strong> = encouraged. Standing on the <strong>tables</strong> = instantly thrown out.</li>
+            <li><strong>Bag rule:</strong> only small bags up to <strong>3 litres</strong> are allowed on the grounds — leave the backpack at the flat.</li>
+            <li>Bring <strong>cash</strong>: a Maß is ~€15+, and a €1–2 tip per round keeps the service coming.</li>
+          </ul>
+        </article>
+
+        <!-- Beer -->
+        <article class="info-card">
+          <h3>🍺 Beer & toasting</h3>
+          <ul class="tick-list">
+            <li>Beer comes by the <strong>Maß</strong> (1 litre, ~6% ABV). Pace yourself — it sneaks up.</li>
+            <li>Toast with <strong>“Prost!”</strong>, clink the <em>base</em> of the mugs, and <strong>make eye contact</strong> — skipping it is said to be bad luck.</li>
+            <li>Not into beer? Ask for a <em>Radler</em> (beer + lemonade) or a <em>Spezi</em> (cola + orange).</li>
+            <li>Water and non-alcoholic drinks are available too — alternate them in.</li>
+          </ul>
+        </article>
+
+        <!-- Survival -->
+        <article class="info-card">
+          <h3>🧭 Survival tips</h3>
+          <ul class="tick-list">
+            <li>Agree a <strong>meeting point</strong> (our Wiesn entrance) — phones die and signal jams in the crowds.</li>
+            <li>Watch your <strong>phone & wallet</strong>: pickpockets love the chaos.</li>
+            <li>Dress in <strong>layers</strong> — tents are saunas, the walk home is freezing.</li>
+            <li>Tents open ~09:00 (10:00 weekends); on weekends arrive early before they close the doors when full.</li>
+            <li>Last call is ~22:30 — then everyone pours out toward Theresienwiese U-Bahn and Hackerbrücke S-Bahn (but we'll be gone by then).</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Q&A -->
+    <section id="qa" class="panel" role="tabpanel">
+      <div class="panel-head">
+        <h2>Anonymous Q&amp;A</h2>
+        <p class="panel-sub">Ask anything — no names attached. Anyone in the crew can answer.</p>
+      </div>
+
+      <div id="qa-mode-banner" class="qa-banner" hidden></div>
+
+      <form id="qa-form" class="qa-form">
+        <textarea id="qa-input" rows="2" maxlength="500" placeholder="Type your question… (nobody sees who asked)"></textarea>
+        <button type="submit" class="btn btn-primary">Ask anonymously</button>
+      </form>
+
+      <div id="qa-list" class="qa-list"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Made for the crew · Prost! 🍻</p>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Supabase (optional backend for Q&A) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Editable data -->
+  <script src="config.js"></script>
+  <script src="data/schedule.js"></script>
+  <script src="data/spots.js"></script>
+  <script src="data/contacts.js"></script>
+
+  <!-- App logic -->
+  <script src="js/app.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/qa.js"></script>
+</body>
+</html>
