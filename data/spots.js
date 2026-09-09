@@ -39,9 +39,9 @@ window.SPOTS = [
   {
     name: "Our flat",
     cat: "Home base",
-    desc: "🏠 Where we sleep — right by Münchner Freiheit (U3/U6). Exact address still loading… update me once we have it!",
-    address: "",              // paste the address here when you have it
-    lat: 48.1616, lng: 11.5860,
+    desc: "🏠 Where we sleep — Seestraße 14, right by Münchner Freiheit (U3/U6).",
+    address: "Seestraße 14, 80802 München",
+    lat: 48.1607, lng: 11.5898,
     color: "purple"
   },
   {

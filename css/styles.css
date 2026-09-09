@@ -478,18 +478,14 @@ html.gated .site-footer { display: none !important; }
   .panel-head h2 { font-size: 24px; }
   .panel-sub { font-size: 14px; }
 
-  /* Keep all four tabs on one line; let them scroll if needed */
+  /* Wrap all tabs onto centred rows so none spill off the screen */
   .tabs {
     width: 100%;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    flex-wrap: wrap;
     justify-content: center;
-    padding-bottom: 2px;
+    gap: 8px;
   }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab { flex: 0 0 auto; font-size: 14px; padding: 9px 14px; }
+  .tab { flex: 0 0 auto; font-size: 14px; padding: 9px 13px; }
 
   .contacts-grid { grid-template-columns: 1fr; }
   .timeline li { grid-template-columns: 66px 1fr; gap: 10px; padding: 11px 14px; }

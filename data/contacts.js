@@ -20,7 +20,7 @@ window.CONTACTS = [
   { name: "Yann",      role: "", phone: "+32 478 92 35 10" },
   { name: "Carlota",   role: "", phone: "+34 630 78 45 87" },
   { name: "Paloma",    role: "", phone: "+34 650 83 39 65" },
-  { name: "Almudena",  role: "", phone: "" },
+  { name: "Almudena",  role: "", phone: "+34 690 90 73 66" },
   { name: "Teresa",    role: "", phone: "+39 391 796 6872" },
   { name: "Angélique", role: "", phone: "+41 79 326 01 95" }
 ];
